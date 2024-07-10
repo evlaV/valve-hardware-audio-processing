@@ -1,2 +1,2 @@
 Valve Audio Signal Processing Plugins
-Version 0.46.3, 2024-07-02
+Version 0.46.4, 2024-07-10
