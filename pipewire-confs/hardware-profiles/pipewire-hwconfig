@@ -11,9 +11,9 @@ declare -r prdir=/usr/share/pipewire/hardware-profiles
 declare -r dmidir=/sys/devices/virtual/dmi/id
 declare -ar confdirs=(client.conf.d
                       client-rt.conf.d
+                      filter-chain.conf.d
                       jack.conf.d
                       minimal.conf.d
-                      pipewire.conf.d
                       pipewire-pulse.conf.d)
 
 dmi_info ()
