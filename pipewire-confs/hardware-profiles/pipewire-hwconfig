@@ -113,6 +113,10 @@ select_profile ()
     product="${product,,}"
     profile="${maker}-${product}"
 
+    if [ "${profile}" = "oem-f7f" ]; then
+        profile="valve-fremont"
+    fi
+
     echo "Checking for wireplumber hardware profile matching $maker, $product"
 
     if [ -d "$prdir"/"$profile" ]
