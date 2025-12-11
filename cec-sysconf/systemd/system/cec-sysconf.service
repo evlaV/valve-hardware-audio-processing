@@ -8,7 +8,7 @@
 #  or (at your option) any later version.
 
 [Unit]
-Description=Hardware Specific Wireplumber Configuration
+Description=Hardware Specific CEC Configuration
 Before=multi-user.target
 ConditionPathIsDirectory=/run
 Before=shutdown.target
@@ -16,7 +16,8 @@ Before=shutdown.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/share/wireplumber/hardware-profiles/wireplumber-hwconfig
+ExecStart=/usr/share/cec-sysconf/cec-hwconfig
 
 [Install]
 WantedBy=multi-user.target
+

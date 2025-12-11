@@ -1,0 +1,84 @@
+#!/bin/bash
+
+set -eu
+
+shopt -s nullglob
+
+declare maker
+declare product
+declare profile
+declare -r plasmaconf=/etc/xdg/plasma-remotecontrollersrc
+declare -r dmidir=/sys/devices/virtual/dmi/id
+
+dmi_info ()
+{
+    local -r key="$1"
+    local file
+
+    case $key in
+        system-manufacturer)
+            file=sys_vendor
+            ;;
+        system-*)
+            file="${key#system-}"
+            file="${file//-/_}"
+            ;;
+        *)
+            file="${file//-/_}"
+            ;;
+    esac
+
+    file=$dmidir/"$file"
+
+    if [ -r "$file" ]
+    then
+        cat "$file"
+    elif type -p dmidecode >/dev/null 2>&1
+    then
+        dmidecode -s "$key"
+    else
+        echo "Neither sysfs DMI $dmidir nor dmidecode are available" >&2
+        echo UNKNOWN
+    fi
+}
+
+unidentified ()
+{
+    echo "$0: System manufacturer and product not identified" >&2
+    echo "  run this command with superuser privileges"
+    exit 1
+}
+
+apply_fremont ()
+{
+  if [ -f "$plasmaconf" ]; then
+    sed -i 's/Steam Deck/Steam Machine/g' "$plasmaconf"
+  fi
+}
+
+select_profile ()
+{
+    if ! maker=$(dmi_info system-manufacturer)
+    then
+        unidentified
+    fi
+
+    if ! product=$(dmi_info system-product-name)
+    then
+        unidentified
+    fi
+
+    maker="${maker,,}"
+    product="${product,,}"
+    profile="${maker}-${product}"
+
+    if [ "${profile}" = "oem-f7f" ]; then
+        apply_fremont
+    fi
+
+    return 0
+}
+
+select_profile
+
+
