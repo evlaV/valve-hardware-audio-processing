@@ -62,6 +62,7 @@ install:
 	@./scripts/setup_wireplumber.sh
 	@./scripts/setup_ucm2.sh
 	@./scripts/setup_sof_fw.sh
+	@./scripts/setup_cecconf.sh
 
 benchmark:
 	@echo "Benchmarking Faust Scripts..."
