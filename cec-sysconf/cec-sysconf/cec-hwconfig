@@ -49,10 +49,24 @@ unidentified ()
     exit 1
 }
 
+apply_default ()
+{
+  if [ -f "$plasmaconf" ]; then
+    sed -i 's/OSDName=.*/OSDName=SteamOS Device/g' "$plasmaconf"
+  fi
+}
+
+apply_deck ()
+{
+  if [ -f "$plasmaconf" ]; then
+    sed -i 's/OSDName=.*/OSDName=Steam Deck/g' "$plasmaconf"
+  fi
+}
+
 apply_fremont ()
 {
   if [ -f "$plasmaconf" ]; then
-    sed -i 's/Steam Deck/Steam Machine/g' "$plasmaconf"
+    sed -i 's/OSDName=.*/OSDName=Steam Machine/g' "$plasmaconf"
   fi
 }
 
@@ -74,6 +88,14 @@ select_profile ()
 
     if [ "${profile}" = "oem-f7f" ]; then
         apply_fremont
+    elif [ "${profile}" = "valve-fremont" ]; then
+        apply_fremont
+    elif [ "${profile}" = "valve-galileo" ]; then
+        apply_deck
+    elif [ "${profile}" = "valve-jupiter" ]; then
+        apply_deck
+    else
+        apply_default
     fi
 
     return 0
